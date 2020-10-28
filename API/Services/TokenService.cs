@@ -22,12 +22,13 @@ namespace API.Services
             var claim = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
-            }
+            };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor{
-                Subject = new ClaimsIdentity(claims),
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claim),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = creds
             };
