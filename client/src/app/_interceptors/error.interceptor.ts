@@ -27,13 +27,13 @@ export class ErrorInterceptor implements HttpInterceptor {
                 modelStateErrors.push(error.error.errors[key])
               }
             }
-            throw modelStateErrors;
+            throw modelStateErrors.flat();
           } else{
-            this.toastr.error(error.statusText, error.status);
+            this.toastr.error("Bad Request", error.status);
           }
           break;
           case 401:
-            this.toastr.error(error.statusText, error.status);
+            this.toastr.error("Unauthorized", error.status);
             break;
           case 404:
             this.router.navigateByUrl('/not-found');
