@@ -9,6 +9,7 @@ import { Observable, throwError } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError } from 'rxjs/operators';
+import { typeofExpr } from '@angular/compiler/src/output/output_ast';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -28,8 +29,10 @@ export class ErrorInterceptor implements HttpInterceptor {
               }
             }
             throw modelStateErrors.flat();
-          } else{
+          } else if(typeof(error.error) === 'object'){
             this.toastr.error("Bad Request", error.status);
+          } else{
+            this.toastr.error(error.error, error.status);
           }
           break;
           case 401:
