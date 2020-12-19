@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Message } from 'src/app/_models/message';
 import { MessageService } from 'src/app/_services/message.service';
 
 @Component({
