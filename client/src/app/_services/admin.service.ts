@@ -11,10 +11,12 @@ export class AdminService {
 
   constructor(private http: HttpClient){}
 
-  getUserWithRoles()
-  {
+  getUserWithRoles(){
     return this.http.get<Partial<User[]>>(this.baseUrl + 'admin/users-with-roles');
-    
   }
 
+
+  updateUserRole(userName: string, roles: string[]){
+    return this.http.post(this.baseUrl + 'admin/edit-roles/' + userName + '?roles=' + roles, {})
+  }
 }
