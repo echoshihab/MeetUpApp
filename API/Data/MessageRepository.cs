@@ -88,17 +88,16 @@ namespace API.Data
         string recipientUserName)
         {
             var messages = await _context.Messages
-                .Include(u => u.Sender).ThenInclude(p => p.Photos)
-                .Include(u => u.Recipient).ThenInclude(p => p.Photos)
                 .Where(m => m.Recipient.UserName == currentUserName && m.RecipientDeleted == false
                 && m.Sender.UserName == recipientUserName || m.Recipient.UserName == recipientUserName
                 && m.Sender.UserName == currentUserName && m.SenderDeleted == false
             )
             .OrderBy(m => m.MessageSent)
+            .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
 
             var unreadMessages = messages.Where(m => m.DateRead == null
-            && m.Recipient.UserName == currentUserName).ToList();
+            && m.RecipientUserName == currentUserName).ToList();
 
             if (unreadMessages.Any())
             {
@@ -109,7 +108,7 @@ namespace API.Data
 
             }
 
-            return _mapper.Map<IEnumerable<MessageDto>>(messages);
+            return messages;
         }
 
         public void RemoveConnection(Connection connection)
